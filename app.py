@@ -34,9 +34,9 @@ categories = ['Others', 'Studies', 'Romance',
 
 #telegram information
 load_dotenv()
-api_id = os.getenv("API_ID")
-api_hash = os.getenv("API_HASH")
-channel_name = os.getenv("CHANNEL_NAME")
+api_id = st.secrets.get("API_ID", os.getenv("API_ID"))
+api_hash = st.secrets.get("API_HASH",os.getenv("API_HASH"))
+channel_name = st.secrets.get("CHANNEL_NAME",os.getenv("CHANNEL_NAME"))
 
 #function to fetch confessions
 async def fetch_messages(limit=30):
