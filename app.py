@@ -14,6 +14,12 @@ from telethon.sync import TelegramClient
 from telethon.tl.functions.messages import GetHistoryRequest
 from dotenv import load_dotenv
 import os 
+import base64
+
+if "session_file" in st.secrets:
+    with open("session_name.session", "wb") as f:
+        f.write(base64.b64decode(st.secrets["session_file"]))
+
 
 #custom stopwords to avoid in the wordcloud
 custom_stopwords = {
@@ -42,7 +48,7 @@ channel_name = st.secrets["CHANNEL_NAME"] if "CHANNEL_NAME" in st.secrets else o
 
 #function to fetch confessions
 async def fetch_messages(limit=30):
-    client = TelegramClient('session_name', api_hash=api_hash, api_id=api_id)
+    #client = TelegramClient('session_name', api_hash=api_hash, api_id=api_id)
     #await client.start(bot_token= bot_token)
     async with TelegramClient('session_name', api_id, api_hash) as client:
         channel = await client.get_entity(channel_name)
@@ -56,7 +62,7 @@ async def fetch_messages(limit=30):
     for message in history.messages:
         if message.message:
             messages.append(message.message)
-    client.disconnect()
+    #client.disconnect()
     return messages
 
 def fetch(limits): 
@@ -83,7 +89,7 @@ selection = st.radio("Select your input method:",
                     index=0, horizontal= True)
 if selection == 'Enter manually ✍️':
     #enter multiple confessions
-    confessions_input = st.text_area("nter confessions one by one:", height = 200,
+    confessions_input = st.text_area("Enter confessions one by one:", height = 200,
                 placeholder = "Press enter ⏎ to record one confession.")
     if confessions_input.strip():
         st.session_state.confessions = confessions_input.strip().split('\n')
@@ -95,7 +101,7 @@ else:
     if st.button("Fetch confessions"):
         with st.spinner("⏳ Fetching confessions..."):
             st.session_state.confessions = fetch(confession_num)
-        st.success(f"✅ Fetched {confession_num} confessions! Click 'Analyse!' for analysis")
+        st.success(f"✅ Fetched confessions! Click 'Analyse!' for analysis")
 
 #sentiment analysis 
 #function to analyse the sentiment 
