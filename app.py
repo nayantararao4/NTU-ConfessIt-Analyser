@@ -38,10 +38,11 @@ load_dotenv()
 api_id = st.secrets["API_ID"] if "API_ID" in st.secrets else os.getenv("API_ID")
 api_hash = st.secrets["API_HASH"] if "API_HASH" in st.secrets else os.getenv("API_HASH")
 channel_name = st.secrets["CHANNEL_NAME"] if "CHANNEL_NAME" in st.secrets else os.getenv("CHANNEL_NAME")
+bot_token = st.secrets["BOT_TOKEN"] if "BOT_TOKEN" in st.secrets else os.getenv("BOT_TOKEN")
 
 #function to fetch confessions
 async def fetch_messages(limit=30):
-    async with TelegramClient("new_session", api_id, api_hash) as client:
+    async with TelegramClient("bot", api_id, api_hash).start(bot_token=bot_token) as client:
         channel = await client.get_entity(channel_name)
         history = await client(GetHistoryRequest(
             peer= channel, limit= limit,
@@ -80,8 +81,7 @@ selection = st.radio("Select your input method:",
                     index=0, horizontal= True)
 if selection == 'Enter manually ✍️':
     #enter multiple confessions
-    st.markdown("<h4>Enter confessions one by one: </h4>", unsafe_allow_html=True)
-    confessions_input = st.text_area("", height = 200,
+    confessions_input = st.text_area("nter confessions one by one:", height = 200,
                 placeholder = "Press enter ⏎ to record one confession.")
     if confessions_input.strip():
         st.session_state.confessions = confessions_input.strip().split('\n')
