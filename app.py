@@ -89,8 +89,7 @@ if selection == 'Enter manually ✍️':
 else:
     #lets user pick how many confessions from tele channel within limits
     st.write("#### Number of confessions must be between 30-100")
-    st.markdown("<h4>How many confessions do you want to fetch?</h4>", unsafe_allow_html= True)
-    confession_num = st.number_input("",
+    confession_num = st.number_input("How many confessions do you want to fetch?",
                                     min_value=30, max_value=100, step=1)
     if st.button("Fetch confessions"):
         with st.spinner("⏳ Fetching confessions..."):
