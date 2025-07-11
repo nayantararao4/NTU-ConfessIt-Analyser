@@ -1,0 +1,12 @@
+# Ignore system and Python clutter
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+.env
+venv/
+.venv/
+.DS_Store
+session.session
