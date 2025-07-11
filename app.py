@@ -42,7 +42,6 @@ channel_name = st.secrets["CHANNEL_NAME"] if "CHANNEL_NAME" in st.secrets else o
 #function to fetch confessions
 async def fetch_messages(limit=30):
     async with TelegramClient("session", api_id, api_hash) as client:
-        client.start()
         channel = await client.get_entity(channel_name)
         history = await client(GetHistoryRequest(
             peer= channel, limit= limit,
