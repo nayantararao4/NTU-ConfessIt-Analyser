@@ -13,13 +13,7 @@ import asyncio
 from telethon.sync import TelegramClient
 from telethon.tl.functions.messages import GetHistoryRequest
 from dotenv import load_dotenv
-import os 
-import base64
-
-if "session_file" in st.secrets:
-    with open("session_name.session", "wb") as f:
-        f.write(base64.b64decode(st.secrets["session_file"]))
-
+import os
 
 #custom stopwords to avoid in the wordcloud
 custom_stopwords = {
@@ -39,18 +33,15 @@ categories = ['Others', 'Studies', 'Romance',
             'Campus', 'Rant', 'Whistleblow']
 
 #telegram information
-load_dotenv()
-#use .env file if secrets in streamlit not accessible
-api_id = st.secrets["API_ID"] if "API_ID" in st.secrets else os.getenv("API_ID")
-api_hash = st.secrets["API_HASH"] if "API_HASH" in st.secrets else os.getenv("API_HASH")
-channel_name = st.secrets["CHANNEL_NAME"] if "CHANNEL_NAME" in st.secrets else os.getenv("CHANNEL_NAME")
-#bot_token = st.secrets["BOT_TOKEN"] if "BOT_TOKEN" in st.secrets else os.getenv("BOT_TOKEN")
+load_dotenv()  # loads variables from .env file
+api_id = os.getenv("API_ID")
+api_hash = os.getenv("API_HASH")
+channel_name = os.getenv("CHANNEL_NAME")
 
 #function to fetch confessions
 async def fetch_messages(limit=30):
-    #client = TelegramClient('session_name', api_hash=api_hash, api_id=api_id)
-    #await client.start(bot_token= bot_token)
-    async with TelegramClient('session_name', api_id, api_hash) as client:
+    async with TelegramClient('session', api_id, api_hash) as client:
+        await client.start()
         channel = await client.get_entity(channel_name)
         history = await client(GetHistoryRequest(
             peer= channel, limit= limit,
