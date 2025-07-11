@@ -38,14 +38,15 @@ load_dotenv()
 api_id = st.secrets["API_ID"] if "API_ID" in st.secrets else os.getenv("API_ID")
 api_hash = st.secrets["API_HASH"] if "API_HASH" in st.secrets else os.getenv("API_HASH")
 channel_name = st.secrets["CHANNEL_NAME"] if "CHANNEL_NAME" in st.secrets else os.getenv("CHANNEL_NAME")
-bot_token = st.secrets["BOT_TOKEN"] if "BOT_TOKEN" in st.secrets else os.getenv("BOT_TOKEN")
+#bot_token = st.secrets["BOT_TOKEN"] if "BOT_TOKEN" in st.secrets else os.getenv("BOT_TOKEN")
 
 #function to fetch confessions
 async def fetch_messages(limit=30):
-    client = TelegramClient("bot", api_id= api_id, api_hash=api_hash)
-    await client.start(bot_token= bot_token)
-    channel = await client.get_entity(channel_name)
-    history = await client(GetHistoryRequest(
+    client = TelegramClient('session_name', api_hash=api_hash, api_id=api_id)
+    #await client.start(bot_token= bot_token)
+    async with TelegramClient('session_name', api_id, api_hash) as client:
+        channel = await client.get_entity(channel_name)
+        history = await client(GetHistoryRequest(
             peer= channel, limit= limit,
             offset_date= None, offset_id= 0,
             min_id=0, max_id=0, add_offset=0, hash=0
