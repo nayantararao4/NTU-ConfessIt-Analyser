@@ -13,7 +13,7 @@ import asyncio
 from telethon.sync import TelegramClient
 from telethon.tl.functions.messages import GetHistoryRequest
 from dotenv import load_dotenv
-import os
+import os 
 
 #custom stopwords to avoid in the wordcloud
 custom_stopwords = {
@@ -33,14 +33,14 @@ categories = ['Others', 'Studies', 'Romance',
             'Campus', 'Rant', 'Whistleblow']
 
 #telegram information
-load_dotenv()  # loads variables from .env file
+load_dotenv()
 api_id = os.getenv("API_ID")
 api_hash = os.getenv("API_HASH")
 channel_name = os.getenv("CHANNEL_NAME")
 
 #function to fetch confessions
 async def fetch_messages(limit=30):
-    async with TelegramClient('nsession', api_id, api_hash) as client:
+    async with TelegramClient("session", api_id, api_hash) as client:
         client.start()
         channel = await client.get_entity(channel_name)
         history = await client(GetHistoryRequest(
@@ -87,7 +87,8 @@ if selection == 'Enter manually ✍️':
 else:
     #lets user pick how many confessions from tele channel within limits
     st.write("#### Number of confessions must be between 30-100")
-    confession_num = st.number_input("How many confessions do you want to fetch?",
+    st.markdown("<h4>How many confessions do you want to fetch?</h4>", unsafe_allow_html= True)
+    confession_num = st.number_input("",
                                     min_value=30, max_value=100, step=1)
     if st.button("Fetch confessions"):
         with st.spinner("⏳ Fetching confessions..."):
