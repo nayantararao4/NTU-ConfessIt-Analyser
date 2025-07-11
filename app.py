@@ -40,8 +40,7 @@ channel_name = os.getenv("CHANNEL_NAME")
 
 #function to fetch confessions
 async def fetch_messages(limit=30):
-    async with TelegramClient("session", api_id, api_hash) as client:
-        client.start()
+    async with TelegramClient("anon", api_id, api_hash) as client:
         channel = await client.get_entity(channel_name)
         history = await client(GetHistoryRequest(
             peer= channel, limit= limit,
